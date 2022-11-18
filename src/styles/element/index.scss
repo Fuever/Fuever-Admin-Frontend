@@ -1,0 +1,29 @@
+$--colors: (
+  "primary": (
+    "base": #f56c6c,
+  ),
+  "success": (
+    "base": #67c23a,
+  ),
+  "warning": (
+    "base": #e6a23c,
+  ),
+  "danger": (
+    "base": #f56c6c,
+  ),
+  "error": (
+    "base": #f56c6c,
+  ),
+  "info": (
+    "base": #909399,
+  ),
+);
+
+@forward "element-plus/theme-chalk/src/mixins/config.scss" with (
+  $namespace: "el-fu"
+);
+
+@forward "element-plus/theme-chalk/src/common/var.scss" with (
+  $colors: $--colors,
+  $button-padding-horizontal: ("default": 50px)
+);
