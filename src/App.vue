@@ -4,7 +4,12 @@
 
 <style lang="scss">
 // stylesheets defined by me
-
+body,html,#app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
 // end
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
