@@ -13,6 +13,13 @@ import './styles/element/index.scss'
 // import 'element-plus/dist/index.css'
 
 
+// markdown
+import VueMarkdownEditor from '@kangc/v-md-editor';
+import '@kangc/v-md-editor/lib/style/base-editor.css';
+import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
+import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
+VueMarkdownEditor.use(vuepressTheme);
+
 const app = createApp(App)
 // axios
 app.config.globalProperties.$axios=axios
@@ -24,4 +31,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app
 .use(router)
 .use(ElementPlus)
+.use(VueMarkdownEditor)
 .mount('#app')

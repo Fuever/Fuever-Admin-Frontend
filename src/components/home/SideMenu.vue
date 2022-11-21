@@ -1,39 +1,39 @@
 <template>
   <div class="side-menu">
-    <el-menu default-active="1" class="el-menu-vertical-fu" @open="handleOpen" @close="handleClose">
-      <el-menu-item index='1' route="postReview">
+    <el-menu default-active="/forum" class="el-menu-vertical-fu" @select="handleSelect">
+      <el-menu-item index='/forum'>
         <el-icon><ChatLineSquare /></el-icon>
         <span>论坛审核</span>
       </el-menu-item>
-      <el-menu-item index='2' route="userManage">
+      <el-menu-item index='/user'>
         <el-icon><User /></el-icon>
         <span>用户管理</span>
       </el-menu-item>
-      <el-sub-menu index="3">
+      <el-sub-menu index="/news">
         <template #title>
           <el-icon><DocumentCopy /></el-icon>
           <span>新闻管理</span>
         </template>
-        <el-menu-item route="newsManage" >
+        <el-menu-item index="/news">
           <span>新闻管理</span>
         </el-menu-item>
-        <el-menu-item route="pubNews" >
+        <el-menu-item index="/new_news">
           <span>发布新闻</span>
         </el-menu-item>
       </el-sub-menu>
-      <el-sub-menu index="4">
+      <el-sub-menu>
         <template #title>
           <el-icon><Calendar /></el-icon>
           <span>校庆管理</span>
         </template>
-        <el-menu-item route="annivManage" >
+        <el-menu-item  index="/anniv">
           <span>校庆管理</span>
         </el-menu-item>
-        <el-menu-item route >
+        <el-menu-item  index="/new_anniv">
           <span>发布校庆</span>
         </el-menu-item>
       </el-sub-menu>
-      <el-menu-item index="5">
+      <el-menu-item index="/personal">
         <el-icon>
           <setting />
         </el-icon>
@@ -44,6 +44,11 @@
 </template>
 
 <script setup>
+import router from '@/router';
+
+const handleSelect = (index)=> {
+  router.push(index)
+}
 
 </script>
 

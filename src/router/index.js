@@ -17,23 +17,43 @@ const routes = [
     default:'/forum',
     children:[
       {
+        path:'',
+        name:'default',
+        redirect:'/forum'
+      },
+      {
         path:'/forum',
+        name:'forum',
         component:() => import('../components/home/contents/forum/ForumManage.vue')
       },
       {
         path:'/user',
+        name:'user',
         component:() => import('../components/home/contents/user/UserManage.vue')
       },
       {
         path:'/news',
+        name:'news',
         component:() => import('../components/home/contents/news/NewsManage.vue')
       },
       {
+        path:'/new_news',
+        name:'new_news',
+        component:() => import('../components/home/contents/news/NewNews.vue')
+      },
+      {
         path:'/anniv',
+        name:'anniv',
         component:() => import('../components/home/contents/anniv/AnnivManage.vue')
       },
       {
+        path:'/new_anniv',
+        name:'new_anniv',
+        component:()=> import('../components/home/contents/anniv/NewAnniv.vue')
+      },
+      {
         path:'/personal',
+        name:'personal',
         component:() => import('../components/home/contents/personal/PersonalCenter.vue')
       },
     ]
