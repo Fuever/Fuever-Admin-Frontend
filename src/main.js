@@ -14,12 +14,13 @@ import './styles/element/index.scss'
 
 
 // markdown
-import VueMarkdownEditor from '@kangc/v-md-editor';
+import VMdEditor from '@kangc/v-md-editor';
+import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/base-editor.css';
-import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
-import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
-VueMarkdownEditor.use(vuepressTheme);
-
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
+import '@kangc/v-md-editor/lib/theme/style/github.css';
+VMdEditor.use(githubTheme);
+VMdPreview.use(githubTheme)
 const app = createApp(App)
 // axios
 app.config.globalProperties.$axios=axios
@@ -31,5 +32,6 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app
 .use(router)
 .use(ElementPlus)
-.use(VueMarkdownEditor)
+.use(VMdEditor)
+.use(VMdPreview)
 .mount('#app')
