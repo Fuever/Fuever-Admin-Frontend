@@ -15,7 +15,7 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-row>
+            <!-- <el-row>
                 <el-col :span="16">
                     <el-form-item label="验证码" prop="captchacode">
                         <el-input v-model="logInForm.captchacode" />
@@ -24,10 +24,10 @@
                 <el-col :span="8">
                     <img src="" alt="base64 verify">
                 </el-col>
-            </el-row>
+            </el-row> -->
             <el-row>
                 <el-col :span="6" :offset="4">
-                    <el-button type="primary" @click="handleLogIn">登录</el-button>
+                    <el-button type="primary" @click="handleLogIn(formref)">登录</el-button>
                 </el-col>
                 <el-col :span="6" :offset="2">
                     <el-button type="primary" plain @click="$emit('switchToSign')">注册</el-button>
@@ -45,9 +45,7 @@ import axios from '@/axios.config';
 const logInForm = reactive({
     username: '',
     password: '',
-    verifycode: ''
 })
-
 const handleLogIn = (formref) => {
     if (!formref) return
     formref.validate((valid) => {
@@ -55,16 +53,15 @@ const handleLogIn = (formref) => {
             const args = {
                 username: logInForm.username,
                 password: logInForm.password,
-                verifycode: logInForm.verifycode
             }
             axios.post(args).then((res) => {
-                if (res.data.code == 200) {
+                if (res.status == 200) {
                     ElMessage({
                         message: '登录成功',
                         type: 'success'
                     })
-
-                    // handle the token or something.
+                    console.log(res);
+                    window.localStorage.setItem('token',res.data.data.token)
                     router.push('/home')
                 }
             })

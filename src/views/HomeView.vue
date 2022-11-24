@@ -28,16 +28,13 @@ import SideMenu from '@/components/home/SideMenu.vue'
     margin: 0px;
     padding: 0px;
 }
-.fu-header {
-    // height: 60px;
-}
 .fu-content-box {
     border: solid 1px rgb(222, 222, 222);
     border-radius: 3px;
-    height:96%;
+    height:auto;
     margin: 5px;
     padding: 10px;
-    overflow: hidden;
+    // overflow: hidden;
     box-shadow: 2px 2px 2px 0px rgb(231, 231, 231);
     background-color: #ffffff;
 }::-webkit-scrollbar { width: 0 !important };

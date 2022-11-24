@@ -5,7 +5,7 @@
                 <el-col :span="10" :offset="6">
                     <el-input v-model="searchWord" placeholder="输入关键词以查找" class="input-with-select">
                         <template #append>
-                            <el-button :type="primary" size>
+                            <el-button type="primary" size>
                                 <el-icon>
                                     <Search />
                                 </el-icon>搜索
@@ -17,69 +17,62 @@
         </el-header>
 
         <el-main>
-            <el-table ref="postsTableRef" :data="tableData" style="width: 100%"
-                @selection-change="handleSelectionChange">
+            <el-table :data="userState.users" style="width: 100%">
                 <el-table-column type="selection" width="35" />
-                <el-table-column label="用户名" width="250">
-                    <template #default="scope">{{ scope.row.title }}</template>
-                    </el-table-column>
-                    <el-table-column property="authorID" label="用户ID" width="100" />
-                    <el-table-column property="authorID" label="用户邮箱" width="300" />
-                    <el-table-column property="authorID" label="用户IP" width="200" />
-                    <el-table-column property="authorID" label="创建时间" width="300" sortable/>
+                    <el-table-column property="nickname" label="用户昵称" width="200" />
+                    <el-table-column property="username" label="用户姓名" width="200" />
+                    <el-table-column property="student_id" label="学号" width="100" />
+                    <el-table-column property="mail" label="用户邮箱" width="300" />
+                    <el-table-column property="residence" label="用户住址" width="200" />
+                    <el-table-column property="entrance_time" label="入学时间" width="300" sortable/>
                 <el-table-column fixed="right" label="操作" width="120">
                     <template #default>
-                        <el-button link type="primary" size="small" @click="handleClick">详情</el-button>
-                        <el-button link type="primary" size="small" @click="handleClick">删除</el-button>
+                        <el-button link type="primary" size="small" @click="handleUserDetail">详情</el-button>
+                        <el-button link type="primary" size="small" @click="handleUserDel">删除</el-button>
                     </template>
     </el-table-column>
             </el-table>
 
 
-<el-dialog v-model="dialogVisible" title="Warning" width="60%" center>
-    <template #header="{ titleId, titleClass }">
-      <div class="my-header">
-        <h4 :id="titleId" :class="titleClass">用户ID:</h4>
-      </div>
-    </template>
-
+<el-dialog v-model="dialogVisible" :title="userState.currentUser.nickname" width="60%" center>
     <el-form :inline="true" class="">
     <el-form-item label="用户昵称">
-      <el-input  placeholder="作者ID" disabled style="width: 100px;"/>
+      <el-input  placeholder="用户昵称" style="width: 100px;" v-model='userState.currentUser.nickname'/>
     </el-form-item>
     <el-form-item>
         <el-form-item label="电话">
-      <el-input  placeholder="911" style="width: 150px;"/>
-    </el-form-item>
-    </el-form-item>
-    <el-form-item>
-        <el-form-item label="位置">
-      <el-input  placeholder="作者ID" style="width: 300px;"/>
+      <el-input  placeholder="911" style="width: 150px;" v-model='userState.currentUser.phone'/>
     </el-form-item>
     </el-form-item>
     <el-form-item label="性别">
-      <el-select  placeholder="gender" style="width: 100px;">
-        <el-option label="男" />
-        <el-option label="女" />
+      <el-select  placeholder="gender" style="width: 100px;" v-model='userState.currentUser.gender'>
+        <el-option label="男" value='1'/>
+        <el-option label="女" value='0'/>
       </el-select>
     </el-form-item>
     <el-form-item label="地址">
-        <el-input  placeholder="现居地址" style="width: 300px;"/>
+        <el-input  placeholder="现居地址" style="width: 300px;" v-model='userState.currentUser.residence'/>
     </el-form-item>
     <el-form-item label="年龄">
-        <el-input  placeholder="11" style="width: 100px;"/>
+        <el-input  placeholder="11" style="width: 100px;" v-model='userState.currentUser.age'/>
     </el-form-item>
     <el-form-item label="邮箱">
-        <el-input  placeholder="11" style="width: 300px;"/>
+        <el-input  placeholder="" style="width: 300px;" v-model='userState.currentUser.mail'/>
     </el-form-item>
     <el-form-item label="入学年份">
-        <el-input  placeholder="11" style="width: 100px;"/>
+        <el-input  placeholder="" style="width: 100px;" v-model='userState.currentUser.entrance_time'/>
     </el-form-item>
-    <el-form-item label="专业">
-        <el-input  placeholder="11" style="width: 100px;"/>
+    <el-form-item label="学号">
+        <el-input  placeholder="" style="width: 100px;" v-model='userState.currentUser.student_id'/>
     </el-form-item>
     <el-form-item label="班级">
-        <el-input  placeholder="11" style="width: 100px;"/>
+        <el-input  placeholder="" style="width: 100px;" v-model='userState.currentUser.class_id'/>
+    </el-form-item>
+    <el-form-item label="职业">
+        <el-input  placeholder="" style="width: 100px;" v-model='userState.currentUser.job'/>
+    </el-form-item>
+    <el-form-item label="电话">
+        <el-input  placeholder="" style="width: 100px;" v-model='userState.currentUser.phone'/>
     </el-form-item>
   </el-form>
    <el-row>
@@ -87,53 +80,103 @@
    </el-row>
    <el-row>
         <el-col :span="4">
-            <el-avatar shape="square" :size="150" :fit="fit" :src="url" />
+            <el-avatar shape="square" :size="150" fit="fit" :src="userState.currentUser.avator" />
         </el-col>
         <el-col :span="4">
             <el-upload
     class="avatar-uploader"
-    action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+    action=""
     :show-file-list="false"
     :on-success="handleAvatarSuccess"
-    :before-upload="beforeAvatarUpload"
   >
-    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+    <img v-if="userState.currentUser.avator" :src="userState.currentUser.avator" class="avatar" />
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
   </el-upload>
         </el-col>
    </el-row>
    <el-row>
     <el-col :span="3" :offset="2">
-        <el-button type="primary" size="small">还原默认头像</el-button>
+        <el-button type="primary" size="small" disabled>还原默认头像</el-button>
     </el-col>
    </el-row>
     <template #footer>
         <span class="dialog-footer">
-            <el-button @click="centerDialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="centerDialogVisible = false">
+            <el-button @click="dialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">
                 保存
             </el-button>
         </span>
     </template>
 </el-dialog>
-
-
-
         </el-main>
         <el-footer>
-            <el-pagination v-model:current-page="currentPage1" :page-size="100" :small="small" :disabled="disabled"
-                :background="background" layout="total, prev, pager, next" :total="1000" @size-change="handleSizeChange"
-                @current-change="handleCurrentChange" />
+            <el-pagination v-model:current-page="currentPage" :page-size="100" small
+                background layout="total, prev, pager, next" :total="1000" />
         </el-footer>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,reactive } from 'vue';
+import axiosInstance from '@/axios.config';
+import { onMounted } from 'vue'
 
+onMounted(() => {
+  axiosInstance.get('/api/auth/users?offset=10&limit=10').then((res)=>{
+    userState.users=res.data.posts;
+  })
+})
 const searchWord = ref('')
-const dialogVisible = ref(true)
+const dialogVisible = ref(false)
+const currentPage=ref(1)
+const userState = reactive({
+    users:[
+        {
+            'id':1,
+            'mail':'222222@222.com',
+            'nickname':'jjjjj',
+            'username':'梅西',
+            'avator':'url',
+            'student_id':"032000000",
+            'phone':'911',
+            'gender':1,
+            'age':19,
+            'job':'student',
+            'entrance_time':22222222222,
+            'class_id':111,
+            'residence':'fuzhou,fujian'
+        }
+    ],
+    currentUser:{
+            'id':1,
+            'mail':'222222@222.com',
+            'nickname':'jjjjj',
+            'username':'梅西',
+            'avator':'url',
+            'student_id':"032000000",
+            'phone':'911',
+            'gender':1,
+            'age':19,
+            'job':'student',
+            'entrance_time':22222222222,
+            'class_id':111,
+            'residence':'fuzhou,fujian'
+        }
+})
+const handleUserDel = (index)=>{
+  userState.users.splice(index,1)
+  axiosInstance.post()
+}
+const handleUserDetail = (index)=> {
+  dialogVisible.value=true;
+  let url = '/api/auth/user/'+userState.users[index].id
+  axiosInstance.get(url).then((res)=>{
+      userState.currentUser = res.data.user
+  })
+}
+const handleAvatarSuccess = ()=> {
 
+}
 </script>
 <style lang="scss" scoped>
 .el-row {

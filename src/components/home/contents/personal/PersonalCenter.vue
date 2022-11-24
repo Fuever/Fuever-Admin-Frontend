@@ -20,7 +20,7 @@
                 用户名:
             </el-col>
             <el-col :span="4" :offset="0">
-                <el-input v-model="input" placeholder="请输入" clearable />
+                <el-input v-model="input" placeholder="请输入" clearable/>
             </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -28,7 +28,7 @@
                 修改密码:
             </el-col>
             <el-col :span="4" :offset="0">
-                <el-input v-model="input" type="password" placeholder="请输入您的密码" show-password />
+                <el-input v-model="input" type="password" placeholder="请输入您的密码" show-password disabled/>
             </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -36,7 +36,7 @@
                 再次输入:
             </el-col>
             <el-col :span="4" :offset="0">
-                <el-input v-model="input" type="password" placeholder="请再次输入密码" show-password />
+                <el-input v-model="input" type="password" placeholder="请再次输入密码" show-password disabled/>
             </el-col>
         </el-row>
         <el-row>

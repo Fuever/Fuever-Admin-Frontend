@@ -1,12 +1,12 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-	baseUrl:'http://localhost:8080',
+	baseUrl:'http://www.avaqua.love:8080',
 	timeout: 2000,
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
+        // 'X-Requested-With': 'XMLHttpRequest',
     },
 })
 axiosInstance.interceptors.request.use(function (config) {
@@ -17,7 +17,15 @@ axiosInstance.interceptors.request.use(function (config) {
     }
     return config
   }, function (error) {
+    console.log(error);
     return Promise.reject(error)
   })
+
+axiosInstance.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+  console.log(error);
+  return Promise.reject(error);
+});
 
 export default axiosInstance

@@ -28,6 +28,15 @@
             </div>
         </el-row>
         <el-row>
+            <el-col :span="9" :offset="0">
+                <div class="mapWrap">
+                    <div class='location' style="height:10px;width:10px;background-color:red"></div>
+                    <el-image style="width: 800px; height: auto" :src="url" class="img"
+                fit="scale-down" @click='getXY'/>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row>
             <el-col :span="2" :offset="5">
             <el-button type="primary" size="large">&nbsp;发布&nbsp;</el-button>
             </el-col>
@@ -38,9 +47,33 @@
 <script setup>
 import {ref} from 'vue'
 const text = ref('text')
+const url = '/img/map.png'
+
+const x = ref(0-502)
+const y = ref(0)
+const getXY = (e)=> {
+    console.log(e);
+    console.log(e.offsetX);
+    x.value=e.offsetX;
+    y.value=e.offsetY;  
+}
 </script>
 
 <style lang="scss" scoped>
+.mapWrap {
+    position: relative;
+}
+.img {
+    position: relative;
+    top: 0px;
+    left:0px;
+}
+.location {
+    position: absolute;
+    top: v-bind(x);
+    left: v-bind(y);
+    z-index: 1000;
+}
 .editor {
     border: 1px solid #f56c6c;
     width: 100%;

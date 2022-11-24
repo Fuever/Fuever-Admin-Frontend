@@ -27,7 +27,8 @@
             </el-tab-pane>
         </el-tabs>
         <div class="switch-orm">
-            <LogIn v-show="activeState=='logIn'" @switch-to-sign="switchToSign"></LogIn>
+            <!-- <LogIn v-show="activeState=='logIn'" @switch-to-sign="switchToSign"></LogIn> -->
+            <LogInWithoutCaptchaVue v-show="activeState=='logIn'" @switch-to-sign="switchToSign"></LogInWithoutCaptchaVue>
             <SignIn v-show="activeState=='signIn'"></SignIn>
         </div>
     </div>
@@ -35,7 +36,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import LogIn from "../components/entry/LogIn.vue";
+// import LogIn from "../components/entry/LogIn.vue";
+import LogInWithoutCaptchaVue from '@/components/entry/LogInWithoutCaptcha.vue';
 import SignIn from '@/components/entry/SignIn.vue';
 const activeState = ref('logIn')
 
@@ -47,9 +49,12 @@ const switchToSign = ()=> {
 </script>
 
 <style lang="scss" scoped>
+.el-tabs__nav {
+    align-content: center;
+}
 .entry-tabs {
     // TODO 
-    padding: 20px 20px 0px 20px;
+    padding: 20px 150px 0px 150px;
 }
 .fu-form {
     position: absolute;
@@ -58,7 +63,7 @@ const switchToSign = ()=> {
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
     z-index: 2;
-    width: 20%;
+    width: 25%;
     height: auto;
     background-color: #ffffff;
     border-radius: 5px;

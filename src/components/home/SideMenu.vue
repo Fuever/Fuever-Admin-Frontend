@@ -21,7 +21,7 @@
           <span>发布新闻</span>
         </el-menu-item>
       </el-sub-menu>
-      <el-sub-menu>
+      <el-sub-menu index="/anniv">
         <template #title>
           <el-icon><Calendar /></el-icon>
           <span>校庆管理</span>
