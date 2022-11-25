@@ -27,7 +27,7 @@
             </el-row> -->
             <el-row>
                 <el-col :span="6" :offset="4">
-                    <el-button type="primary" @click="handleLogIn(formref)">登录</el-button>
+                    <el-button type="primary" @click="handleLogIn">登录</el-button>
                 </el-col>
                 <el-col :span="6" :offset="2">
                     <el-button type="primary" plain @click="$emit('switchToSign')">注册</el-button>
@@ -41,36 +41,32 @@
 import { reactive } from 'vue';
 import { ElMessage } from 'element-plus';
 import router from '@/router';
-import axios from '@/axios.config';
+import axiosInstance from '@/axios.config';
 const logInForm = reactive({
-    username: '',
-    password: '',
+    username: '1234567',
+    password: '1234567',
 })
-const handleLogIn = (formref) => {
-    if (!formref) return
-    formref.validate((valid) => {
-        if (valid) {
-            const args = {
-                username: logInForm.username,
-                password: logInForm.password,
-            }
-            axios.post(args).then((res) => {
-                if (res.status == 200) {
-                    ElMessage({
-                        message: '登录成功',
-                        type: 'success'
-                    })
-                    console.log(res);
-                    window.localStorage.setItem('token',res.data.data.token)
-                    router.push('/home')
-                }
+const handleLogIn = () => {
+    const args = {
+        name: logInForm.username,
+        password: logInForm.password,
+    }
+    axiosInstance.post('/api/pub/admin/login',args).then((res) => {
+        if (res.status == 200) {
+            ElMessage({
+                message: '登录成功',
+                type: 'success'
             })
+            console.log(res);
+            window.localStorage.setItem('token', res.data.data.token)
+            router.push('/home')
         } else {
-            ElMessage.error("登录失败，请稍后再试！")
-            return false
+    ElMessage.error("登录失败，请稍后再试！")
+return false
         }
     })
-}
+} 
+
 
 const checkUserame = (_, value, callback) => {
     if (!value) {

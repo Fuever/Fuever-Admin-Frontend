@@ -26,9 +26,9 @@
                     <el-table-column property="residence" label="用户住址" width="200" />
                     <el-table-column property="entrance_time" label="入学时间" width="300" sortable/>
                 <el-table-column fixed="right" label="操作" width="120">
-                    <template #default>
-                        <el-button link type="primary" size="small" @click="handleUserDetail">详情</el-button>
-                        <el-button link type="primary" size="small" @click="handleUserDel">删除</el-button>
+                    <template #default="scope">
+                        <el-button link type="primary" size="small" @click="handleUserDetail(scope.$index)">详情</el-button>
+                        <el-button link type="primary" size="small" @click="handleUserDel(scope.$index, scope.row)">删除</el-button>
                     </template>
     </el-table-column>
             </el-table>
@@ -45,9 +45,9 @@
     </el-form-item>
     </el-form-item>
     <el-form-item label="性别">
-      <el-select  placeholder="gender" style="width: 100px;" v-model='userState.currentUser.gender'>
-        <el-option label="男" value='1'/>
-        <el-option label="女" value='0'/>
+      <el-select  placeholder="gender" style="width: 100px;" v-model='userState.currentUser.gender' default-first-option>
+        <el-option label="男" value='true'/>
+        <el-option label="女" value='false'/>
       </el-select>
     </el-form-item>
     <el-form-item label="地址">
@@ -102,7 +102,7 @@
     <template #footer>
         <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">
+            <el-button type="primary" @click="saveUser">
                 保存
             </el-button>
         </span>
@@ -120,10 +120,11 @@
 import { ref,reactive } from 'vue';
 import axiosInstance from '@/axios.config';
 import { onMounted } from 'vue'
-
+import ElMessage from 'element-plus'
 onMounted(() => {
-  axiosInstance.get('/api/auth/users?offset=10&limit=10').then((res)=>{
-    userState.users=res.data.posts;
+  axiosInstance.get('/api/auth/admin/user/?offset=0&limit=10').then((res)=>{
+    console.log(res);
+    userState.users=res.data.data;
   })
 })
 const searchWord = ref('')
@@ -163,16 +164,28 @@ const userState = reactive({
             'residence':'fuzhou,fujian'
         }
 })
+const saveUser = ()=> {
+    axiosInstance.put('/api/auth/admin/user/',userState.currentUser).then((res)=>{
+        if (res.status==200) {
+            ElMessage.success('保存成功')
+            setTimeout(()=>{
+                dialogVisible.value=false;
+            },1000)
+        }
+    })
+}
 const handleUserDel = (index)=>{
-  userState.users.splice(index,1)
-  axiosInstance.post()
+  axiosInstance.post('/api/auth/admin/user',{'id':userState.users[index].id}).then((res)=>{
+    if (res.status==200) {
+      userState.users.splice(index,1);
+      ElMessage.success('删除成功')
+    }
+  })
 }
 const handleUserDetail = (index)=> {
   dialogVisible.value=true;
-  let url = '/api/auth/user/'+userState.users[index].id
-  axiosInstance.get(url).then((res)=>{
-      userState.currentUser = res.data.user
-  })
+  console.log(index);
+  userState.currentUser = userState.users[index]
 }
 const handleAvatarSuccess = ()=> {
 

@@ -17,15 +17,15 @@
         </el-header>
 
         <el-main>
-            <el-table :data="annivState.annivs" style="width: 100%"
-                @selection-change="handleSelectionChange">
+            <el-table :data="annivState.annivs" style="width: 100%">
                 <el-table-column type="selection" width="35" />
                 <el-table-column label="活动名称" width="350">
                     <template #default="scope">{{ scope.row.title }}</template>
                     </el-table-column>
-                    <el-table-column property="" label="管理员ID" width="100" />
-                    <el-table-column property="authorID" label="开始时间" width="300" sortable/>
-                    <el-table-column property="authorID" label="结束时间" width="300" sortable/>
+                    <el-table-column property="admin_id" label="管理员ID" width="200" />
+                    <el-table-column property="start" label="开始时间" width="300" sortable formatter='timeformat'/>
+                    <el-table-column property="end" label="结束时间" width="300" sortable/>
+                    <el-table-column property="content" label="内容" width="300" sortable/>
                 <el-table-column fixed="right" label="操作" width="120">
                     <template #default>
                         <el-button link type="primary" size="small" @click="handleDetail">详情</el-button>
@@ -61,7 +61,7 @@
     <template #footer>
         <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">
+            <el-button type="primary" @click="saveAnniv">
                 保存
             </el-button>
         </span>
@@ -79,11 +79,21 @@
 </template>
 
 <script setup>
-import { ref,reactive } from 'vue';
-
+import { ref,reactive,onMounted } from 'vue';
+import { ElMessage } from 'element-plus';
+import axiosInstance from '@/axios.config';
+onMounted(() => {
+  axiosInstance.get('/api/pub/anniv?limit=20&offset=0').then((res) => {
+    annivState.annivs = res.data.data;
+    annivState.currentAnniv = annivState.annivs[0].id;
+  })
+})
 const searchWord = ref('')
 const dialogVisible = ref(false)
 const currentPage=ref(1)
+// const timeformat = (cellValue)=>{
+//     return new Date(cellValue).toLocaleString();
+// }
 const annivState = reactive({
     annivs:[
 
@@ -92,6 +102,28 @@ const annivState = reactive({
 
     }
 })
+const saveAnniv = ()=> {
+    axiosInstance.put('/api/auth/admin/anniv/',annivState.currentAnniv).then((res)=>{
+    if (res.status==200) {
+        ElMessage.success('保存成功');
+        setTimeout(()=>{
+            dialogVisible.value = false
+        },1000)
+    }
+  })
+}
+const handleDel = (index)=>{
+  axiosInstance.delete('/api/auth/admin/anniv/',{id:annivState.annivs[index].id}).then((res)=>{
+    if (res.status==200) {
+        ElMessage.success('删除成功');
+        annivState.annivs.splice(index,1);
+    }
+  })
+}
+const handleDetail = (index)=> {
+  dialogVisible.value = true  
+  annivState.currentAnniv = annivState.annivs[index]
+}
 </script>
 <style lang="scss" scoped>
 .el-row {

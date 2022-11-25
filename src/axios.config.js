@@ -1,19 +1,18 @@
 import axios from 'axios'
+// axios.defaults.baseURL = 'http://192.168.31.20:8080'
+axios.defaults.baseURL.baseUrl='http://www.avaqua.love:8080'
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const axiosInstance = axios.create({
-	baseUrl:'http://www.avaqua.love:8080',
-	timeout: 2000,
-    withCredentials: true,
+	timeout: 20000,
     headers: {
         'Content-Type': 'application/json',
-        // 'X-Requested-With': 'XMLHttpRequest',
     },
 })
 axiosInstance.interceptors.request.use(function (config) {
     let token = window.localStorage.getItem('token')
     if (token) {
-      let token = JSON.parse(token)
-      config.headers.Authorization = token
+      config.headers['Authorization'] = token
     }
     return config
   }, function (error) {
