@@ -5,7 +5,7 @@
                 <el-col :span="10" :offset="6">
                     <el-input v-model="searchWord" placeholder="输入关键词以查找" class="input-with-select">
                         <template #append>
-                            <el-button :type="primary" size>
+                            <el-button type="primary" size>
                                 <el-icon>
                                     <Search />
                                 </el-icon>搜索
@@ -23,13 +23,13 @@
                     <template #default="scope">{{ scope.row.title }}</template>
                     </el-table-column>
                     <el-table-column property="admin_id" label="管理员ID" width="200" />
-                    <el-table-column property="start" label="开始时间" width="300" sortable formatter='timeformat'/>
-                    <el-table-column property="end" label="结束时间" width="300" sortable/>
+                    <el-table-column property="start" label="开始时间" width="300" sortable :formatter='timeformat1'/>
+                    <el-table-column property="end" label="结束时间" width="300" sortable :formatter='timeformat2'/>
                     <el-table-column property="content" label="内容" width="300" sortable/>
                 <el-table-column fixed="right" label="操作" width="120">
-                    <template #default>
-                        <el-button link type="primary" size="small" @click="handleDetail">详情</el-button>
-                        <el-button link type="primary" size="small" @click="handleDel">删除</el-button>
+                    <template #default="scope">
+                        <el-button link type="primary" size="small" @click="handleDetail(scope.$index)">详情</el-button>
+                        <el-button link type="primary" size="small" @click="handleDel(scope.$index)">删除</el-button>
                     </template>
     </el-table-column>
             </el-table>
@@ -37,7 +37,7 @@
 <el-dialog v-model="dialogVisible" title="" width="60%" center>
     <el-form :inline="true" class="">
     <el-form-item label="活动标题" style="width: 100%;">
-      <el-input  placeholder="标题" style="width: 100%;"/>
+      <el-input  placeholder="标题" style="width: 100%;" v-model='annivState.currentAnniv.title'/>
     </el-form-item>
     </el-form>
     <el-row class="title">
@@ -45,17 +45,17 @@
             <p>起止时间</p>
         </el-col>
         <el-col :span="4">
-            <el-date-picker v-model="startTime" type="datetime" placeholder="Select date and time" />
+            <el-date-picker v-model="annivState.currentAnniv.start" type="datetime" placeholder="Select date and time" format="YYYY/MM/DD HH:mm:ss"/>
         </el-col>
         <el-col :span='1' :offset="1">
             <p>-</p>
         </el-col>
         <el-col :span="4">
-            <el-date-picker v-model="endTime" type="datetime" placeholder="Select date and time" />
+            <el-date-picker v-model="annivState.currentAnniv.end" type="datetime" placeholder="Select date and time" format="YYYY/MM/DD HH:mm:ss"/>
         </el-col>
     </el-row>
     <div class="editor">
-        <v-md-editor v-model="text" height="400px" left-toolbar="undo redo bold italic h hr strikethrough ul ol quote table save clear" ></v-md-editor>
+        <v-md-editor v-model="annivState.currentAnniv.content" height="400px" left-toolbar="undo redo bold italic h hr strikethrough ul ol quote table save clear" ></v-md-editor>
             </div>
 
     <template #footer>
@@ -67,13 +67,10 @@
         </span>
     </template>
 </el-dialog>
-
-
-
         </el-main>
         <el-footer>
-            <el-pagination v-model:current-page="currentPage" :page-size="100" :small="small" :disabled="disabled"
-                :background="background" layout="total, prev, pager, next" :total="1000"/>
+            <el-pagination v-model:current-page="currentPage" :page-size="100" small disabled
+                background layout="total, prev, pager, next" :total="1000"/>
         </el-footer>
     </div>
 </template>
@@ -82,12 +79,19 @@
 import { ref,reactive,onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import axiosInstance from '@/axios.config';
+// import { computed } from '@vue/reactivity';
 onMounted(() => {
   axiosInstance.get('/api/pub/anniv?limit=20&offset=0').then((res) => {
     annivState.annivs = res.data.data;
     annivState.currentAnniv = annivState.annivs[0].id;
   })
 })
+const timeformat1 = (row)=>{
+    return new Date(row.start*1000).toLocaleString()
+}
+const timeformat2 = (row)=>{
+    return new Date(row.end*1000).toLocaleString()
+}
 const searchWord = ref('')
 const dialogVisible = ref(false)
 const currentPage=ref(1)
@@ -103,6 +107,8 @@ const annivState = reactive({
     }
 })
 const saveAnniv = ()=> {
+    annivState.currentAnniv.start = annivState.currentAnniv.start/1000;
+    annivState.currentAnniv.end = annivState.currentAnniv.end/1000;
     axiosInstance.put('/api/auth/admin/anniv/',annivState.currentAnniv).then((res)=>{
     if (res.status==200) {
         ElMessage.success('保存成功');
@@ -123,6 +129,8 @@ const handleDel = (index)=>{
 const handleDetail = (index)=> {
   dialogVisible.value = true  
   annivState.currentAnniv = annivState.annivs[index]
+  annivState.currentAnniv.start*=1000
+  annivState.currentAnniv.end*=1000
 }
 </script>
 <style lang="scss" scoped>

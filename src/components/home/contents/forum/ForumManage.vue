@@ -33,7 +33,7 @@
         <el-table-column label="标题" width="320">
           <template #default="scope">{{ scope.row.title }}</template>
         </el-table-column>
-        <el-table-column prop="author_id" label="作者ID" width="100" />
+        <el-table-column prop="author_name" label="作者昵称" width="100" />
         <el-table-column prop="state" label="状态" width="150" :filters="[
           { text: '置顶', value: 1 },
           { text: '正常', value: 0 },
@@ -43,9 +43,9 @@
             <el-tag :type="typeJudge(scope.row.state)">{{ tagJudge(scope.row.state) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column property="created_time" label="创建时间" width="300" sortable />
-        <el-table-column property="updated_time" label="更新时间" width="300" sortable />
-        <el-table-column fixed="right" label="操作" width="350">
+        <el-table-column property="created_time" label="创建时间" width="300" sortable :formatter='timeformat1'/>
+        <el-table-column property="updated_time" label="更新时间" width="300" sortable :formatter='timeformat2'/>
+        <el-table-column fixed="right" label="操作" width="250">
           <template #default="scope">
             <el-button link type="primary" size="small" @click.prevent="handleDetail(scope.$index)">详情</el-button>
             <el-button link type="primary" size="small" @click.prevent="handleTop(scope.$index)">置顶</el-button>
@@ -62,11 +62,11 @@
             <el-input placeholder="作者ID" disabled />
           </el-form-item>
           <el-form-item label="状态">
-            <el-select v-model="stateTable.currentPost.state" default-first-option>
-              <el-option label="正常" value=2 />
+            <!-- <el-select v-model="stateTable.currentPost.state" :on-change="handleChange">
+              <el-option label="正常" value=0 />
               <el-option label="置顶" value=1 />
-              <el-option label="已隐藏" value=3 />
-            </el-select>
+              <el-option label="已隐藏" value=2 />
+            </el-select> -->
           </el-form-item>
         </el-form>
         <el-form-item label="创建时间">
@@ -173,12 +173,18 @@ const stateTable = reactive(
       "title": "离层思准次",
       "created_time": 502778903776,
       "updated_time": 1542380569012,
-      "state": 1,
+      "state": "",
       "block_id": 79,
       "is_lock": false,
       "id": 37
     }
   })
+const timeformat1 = (row)=> {
+    return new Date(row.created_time*1000).toLocaleString()
+}
+const timeformat2 = (row)=> {
+    return new Date(row.updated_time*1000).toLocaleString()
+}
 const addblock = ()=> {
   axiosInstance.post('/api/auth/admin/block/',{'title':newblock.value}).then((res)=>{
     if (res.status==200) {
@@ -191,7 +197,8 @@ const addblock = ()=> {
   })
 }
 const filterTag = (value, row) => {
-  return row === value
+  console.log(value,row);
+  return row.state === value
 }
 const typeJudge = (state) => {
   if (state == 1) return 'danger'
@@ -207,14 +214,20 @@ const handleDetail = (index) => {
   dialogVisible.value = true;
   let url = '/api/pub/posts/p/' + stateTable.posts[index].id.toString()+'?limit=20&offset=0'
   axiosInstance.get(url).then((res) => {
-    console.log(res);
     stateTable.comments = res.data.data.comment;
     stateTable.currentPost = res.data.data.post;
   })
 }
 const handleTop = (index) => {
   stateTable.posts[index].state = 1
-  axiosInstance.post()
+  axiosInstance.put('/api/auth/admin/posts/',{
+    id:stateTable.posts[index].id,
+    state:stateTable.posts[index].state
+  }).then((res)=>{
+    if (res.status==20) {
+      ElMessage.success('修改成功')
+    }
+  })
 }
 // const handleHide = (index) => {
 //   stateTable.posts[index].state = 1
@@ -230,7 +243,7 @@ const handleDelete = (index) => {
   })
 }
 const deleteRow = (index) => {
-  let url = '/api' + stateTable.comments[index].id
+  let url = '/api/auth/admin/comment/' + stateTable.comments[index].id
   axiosInstance.delete(url).then((res) => {
     if (res.status == 200) {
       stateTable.comments.splice(index, 1)

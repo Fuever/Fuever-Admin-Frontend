@@ -12,7 +12,6 @@ import './styles/element/index.scss'
 // original theme
 // import 'element-plus/dist/index.css'
 
-
 // markdown
 import VMdEditor from '@kangc/v-md-editor';
 import VMdPreview from '@kangc/v-md-editor/lib/preview';

@@ -17,14 +17,14 @@
         </el-header>
 
         <el-main>
-            <el-table :data="userState.users" style="width: 100%">
+            <el-table :data="usersState.users" style="width: 100%">
                 <el-table-column type="selection" width="35" />
                     <el-table-column property="nickname" label="用户昵称" width="200" />
                     <el-table-column property="username" label="用户姓名" width="200" />
                     <el-table-column property="student_id" label="学号" width="100" />
                     <el-table-column property="mail" label="用户邮箱" width="300" />
                     <el-table-column property="residence" label="用户住址" width="200" />
-                    <el-table-column property="entrance_time" label="入学时间" width="300" sortable/>
+                    <el-table-column property="entrance_time" label="入学时间" width="300" sortable :formatter='timeformat'/>
                 <el-table-column fixed="right" label="操作" width="120">
                     <template #default="scope">
                         <el-button link type="primary" size="small" @click="handleUserDetail(scope.$index)">详情</el-button>
@@ -34,45 +34,45 @@
             </el-table>
 
 
-<el-dialog v-model="dialogVisible" :title="userState.currentUser.nickname" width="60%" center>
+<el-dialog v-model="dialogVisible" :title="usersState.currentUser.nickname" width="60%" center>
     <el-form :inline="true" class="">
     <el-form-item label="用户昵称">
-      <el-input  placeholder="用户昵称" style="width: 100px;" v-model='userState.currentUser.nickname'/>
+      <el-input  placeholder="用户昵称" style="width: 100px;" v-model='usersState.currentUser.nickname'/>
     </el-form-item>
     <el-form-item>
         <el-form-item label="电话">
-      <el-input  placeholder="911" style="width: 150px;" v-model='userState.currentUser.phone'/>
+      <el-input  placeholder="911" style="width: 150px;" v-model='usersState.currentUser.phone'/>
     </el-form-item>
     </el-form-item>
-    <el-form-item label="性别">
-      <el-select  placeholder="gender" style="width: 100px;" v-model='userState.currentUser.gender' default-first-option>
+    <el-form-item :label="gender">
+      <el-select  placeholder="gender" style="width: 100px;" v-model='gender' default-first-option>
         <el-option label="男" value='true'/>
         <el-option label="女" value='false'/>
       </el-select>
     </el-form-item>
     <el-form-item label="地址">
-        <el-input  placeholder="现居地址" style="width: 300px;" v-model='userState.currentUser.residence'/>
+        <el-input  placeholder="现居地址" style="width: 300px;" v-model='usersState.currentUser.residence'/>
     </el-form-item>
     <el-form-item label="年龄">
-        <el-input  placeholder="11" style="width: 100px;" v-model='userState.currentUser.age'/>
+        <el-input  placeholder="11" style="width: 100px;" v-model='usersState.currentUser.age'/>
     </el-form-item>
     <el-form-item label="邮箱">
-        <el-input  placeholder="" style="width: 300px;" v-model='userState.currentUser.mail'/>
+        <el-input  placeholder="" style="width: 300px;" v-model='usersState.currentUser.mail'/>
     </el-form-item>
     <el-form-item label="入学年份">
-        <el-input  placeholder="" style="width: 100px;" v-model='userState.currentUser.entrance_time'/>
+        <el-input  placeholder="" style="width: 100px;" v-model='usersState.currentUser.entrance_time'/>
     </el-form-item>
     <el-form-item label="学号">
-        <el-input  placeholder="" style="width: 100px;" v-model='userState.currentUser.student_id'/>
+        <el-input  placeholder="" style="width: 100px;" v-model='usersState.currentUser.student_id'/>
     </el-form-item>
     <el-form-item label="班级">
-        <el-input  placeholder="" style="width: 100px;" v-model='userState.currentUser.class_id'/>
+        <el-input  placeholder="" style="width: 100px;" v-model='usersState.currentUser.class_id'/>
     </el-form-item>
     <el-form-item label="职业">
-        <el-input  placeholder="" style="width: 100px;" v-model='userState.currentUser.job'/>
+        <el-input  placeholder="" style="width: 100px;" v-model='usersState.currentUser.job'/>
     </el-form-item>
     <el-form-item label="电话">
-        <el-input  placeholder="" style="width: 100px;" v-model='userState.currentUser.phone'/>
+        <el-input  placeholder="" style="width: 100px;" v-model='usersState.currentUser.phone'/>
     </el-form-item>
   </el-form>
    <el-row>
@@ -80,17 +80,17 @@
    </el-row>
    <el-row>
         <el-col :span="4">
-            <el-avatar shape="square" :size="150" fit="fit" :src="userState.currentUser.avator" />
+            <el-avatar shape="square" :size="150" fit="fit" :src="usersState.currentUser.avatar" />
         </el-col>
         <el-col :span="4">
             <el-upload
-    class="avatar-uploader"
-    action=""
-    :show-file-list="false"
-    :on-success="handleAvatarSuccess"
+        class="avatar-uploader"
+        action=''
+        :show-file-list="false"
+        :before-upload="uploadImage"
   >
-    <img v-if="userState.currentUser.avator" :src="userState.currentUser.avator" class="avatar" />
-    <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+    <!-- <img :src="usersState.currentUser.avatar" class="avatar" /> -->
+    <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
   </el-upload>
         </el-col>
    </el-row>
@@ -117,27 +117,32 @@
 </template>
 
 <script setup>
-import { ref,reactive } from 'vue';
+import { ref,reactive,computed } from 'vue';
 import axiosInstance from '@/axios.config';
 import { onMounted } from 'vue'
 import ElMessage from 'element-plus'
 onMounted(() => {
   axiosInstance.get('/api/auth/admin/user/?offset=0&limit=10').then((res)=>{
-    console.log(res);
-    userState.users=res.data.data;
+    usersState.users=res.data.data;
   })
 })
+const gender= computed(() => {
+  return usersState.currentUser.gender==true ? '男' : '女'
+})
+const timeformat = (row)=> {
+    return new Date(row.entrance_time*1000).toLocaleString()
+}
 const searchWord = ref('')
 const dialogVisible = ref(false)
 const currentPage=ref(1)
-const userState = reactive({
+const usersState = reactive({
     users:[
         {
             'id':1,
             'mail':'222222@222.com',
             'nickname':'jjjjj',
             'username':'梅西',
-            'avator':'url',
+            'avatar':'url',
             'student_id':"032000000",
             'phone':'911',
             'gender':1,
@@ -153,7 +158,7 @@ const userState = reactive({
             'mail':'222222@222.com',
             'nickname':'jjjjj',
             'username':'梅西',
-            'avator':'url',
+            'avatar':'url',
             'student_id':"032000000",
             'phone':'911',
             'gender':1,
@@ -165,7 +170,7 @@ const userState = reactive({
         }
 })
 const saveUser = ()=> {
-    axiosInstance.put('/api/auth/admin/user/',userState.currentUser).then((res)=>{
+    axiosInstance.put('/api/auth/admin/user/',usersState.currentUser).then((res)=>{
         if (res.status==200) {
             ElMessage.success('保存成功')
             setTimeout(()=>{
@@ -175,9 +180,9 @@ const saveUser = ()=> {
     })
 }
 const handleUserDel = (index)=>{
-  axiosInstance.post('/api/auth/admin/user',{'id':userState.users[index].id}).then((res)=>{
+  axiosInstance.post('/api/auth/admin/user/'+usersState.users[index].id).then((res)=>{
     if (res.status==200) {
-      userState.users.splice(index,1);
+      usersState.users.splice(index,1);
       ElMessage.success('删除成功')
     }
   })
@@ -185,10 +190,25 @@ const handleUserDel = (index)=>{
 const handleUserDetail = (index)=> {
   dialogVisible.value=true;
   console.log(index);
-  userState.currentUser = userState.users[index]
+  usersState.currentUser = usersState.users[index]
 }
-const handleAvatarSuccess = ()=> {
-
+const uploadImage =(
+  uploadFile
+) => {
+    let formData = new FormData();
+    formData.append('image', uploadFile);
+    let config = {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }
+    axiosInstance.post('/api/auth/admin/img/', formData, config).then((res) => {
+        if (res.status === 200) {
+            
+            usersState.currentUser.avatar = res.data.data;
+            console.log(usersState.currentUser);
+        }
+    })
 }
 </script>
 <style lang="scss" scoped>
@@ -212,7 +232,7 @@ const handleAvatarSuccess = ()=> {
 
 .el-icon.avatar-uploader-icon {
   font-size: 28px;
-  color: #8c939d;
+//   color: #8c939d;
   width: 150px;
   height: 150px;
   text-align: center;

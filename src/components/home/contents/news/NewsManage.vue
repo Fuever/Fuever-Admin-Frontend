@@ -38,7 +38,25 @@
       <el-input  placeholder="标题" v-model="newsState.currentnew.title" style="width: 100%;"/>
     </el-form-item>
     </el-form>
-   
+    <el-row>
+            <el-col :span="2">
+                <p>新闻封面</p>
+            </el-col>
+            <el-col :span="6">
+                <el-upload
+                action="" :before-upload="uploadcover" :limit="1">
+                <el-button type="primary">Click to upload</el-button>
+                <template #tip>
+                    <div class="el-upload__tip">
+                        jpg/png files with a size less than 500KB.
+                    </div>
+                </template>
+            </el-upload>
+            </el-col>
+            <el-row :span="6">
+                <el-image v-if="newsState.currentnew.cover!=''" style="width: 100px; height: 60px" :src="newsState.currentnew.cover" :fit="fit" />
+            </el-row>
+        </el-row>
     <div class="editor">
         <v-md-editor v-model="newsState.currentnew.content" height="400px" left-toolbar="undo redo bold italic h hr strikethrough ul ol quote table save clear" ></v-md-editor>
             </div>
@@ -83,6 +101,22 @@ const newsState = reactive({
     }
 })
 
+const uploadcover =(
+  uploadFile
+) => {
+    let formData = new FormData();
+    formData.append('image', uploadFile);
+    let config = {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }
+    axiosInstance.post('/api/auth/admin/img/', formData, config).then((res) => {
+        if (res.status === 200) {
+            newsState.currentnew.cover = res.data.data;
+        }
+    })
+}
 const saveNews = ()=> {
     axiosInstance.put('/api/auth/admin/news/',newsState.currentnew).then((res)=>{
     if (res.status==200) {

@@ -5,7 +5,7 @@
                 <p>活动标题</p>
             </el-col>
             <el-col :span="12">
-            <el-input v-model="annivState.anniv.title" placeholder="Please input" size='medium'/>
+            <el-input v-model="annivState.anniv.title" placeholder="Please input" />
             </el-col>
         </el-row>
         <el-row class="title">
@@ -38,7 +38,7 @@
         </el-row>
         <el-row>
             <el-col :span="2" :offset="5">
-            <el-button type="primary" size="large" @click="pubAnniv">&nbsp;发布&nbsp;</el-button>
+            <el-button type="primary" @click="pubAnniv">&nbsp;发布&nbsp;</el-button>
             </el-col>
         </el-row>
     </div>
@@ -70,16 +70,15 @@ const computeTS = ()=>{
 }
 const pubAnniv = ()=>{
     computeTS();
-    console.log(annivState.anniv);
     axiosInstance.post('/api/auth/admin/anniv/',annivState.anniv).then((res)=>{
         if (res.status==200) {
             ElMessage.success('创建成功');
-            annivState.news.title='';
-            annivState.news.content='';
-            annivState.news.start=0;
-            annivState.news.end=0;
-            annivState.news.position_x=0.0;
-            annivState.news.position_y=0.0;
+            annivState.anniv.title='';
+            annivState.anniv.content='';
+            annivState.anniv.start=0;
+            annivState.anniv.end=0;
+            annivState.anniv.position_x=0.0;
+            annivState.anniv.position_y=0.0;
         }
     })
 }
@@ -88,8 +87,6 @@ const url = '/img/map.png'
 const x = ref('0px')
 const y = ref('0px')
 const getXY = (e)=> {
-    console.log(e);
-    console.log(e.offsetX);
     x.value=e.offsetX+'px';
     y.value=e.offsetY+'px';  
 }
