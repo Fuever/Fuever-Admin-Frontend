@@ -29,8 +29,8 @@
 
     <el-main>
       <el-table ref="postsTableRef" :data="stateTable.posts">
-        <el-table-column type="selection" width="35" />
-        <el-table-column label="标题" width="320">
+        <el-table-column type="selection" width="35" fixed/>
+        <el-table-column label="标题" width="320" fixed>
           <template #default="scope">{{ scope.row.title }}</template>
         </el-table-column>
         <el-table-column prop="author_name" label="作者昵称" width="100" />

@@ -18,13 +18,15 @@
 
         <el-main>
             <el-table :data="usersState.users" style="width: 100%">
-                <el-table-column type="selection" width="35" />
-                    <el-table-column property="nickname" label="用户昵称" width="200" />
+                <el-table-column type="selection" width="35" fixed/>
+                    <el-table-column property="nickname" label="用户昵称" width="200" fixed/>
                     <el-table-column property="username" label="用户姓名" width="200" />
                     <el-table-column property="student_id" label="学号" width="100" />
-                    <el-table-column property="mail" label="用户邮箱" width="300" />
-                    <el-table-column property="residence" label="用户住址" width="200" />
-                    <el-table-column property="entrance_time" label="入学时间" width="300" sortable :formatter='timeformat'/>
+                    <el-table-column property="phone" label="电话" width="200" />
+                    <el-table-column property="mail" label="邮箱" width="200" />
+                    <el-table-column property="job" label="职业" width="100" />
+                    <el-table-column property="residence" label="住址" width="200" />
+                    <el-table-column property="entrance_time" label="入学时间" width="200" sortable :formatter='timeformat'/>
                 <el-table-column fixed="right" label="操作" width="120">
                     <template #default="scope">
                         <el-button link type="primary" size="small" @click="handleUserDetail(scope.$index)">详情</el-button>

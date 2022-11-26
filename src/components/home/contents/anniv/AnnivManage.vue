@@ -18,8 +18,8 @@
 
         <el-main>
             <el-table :data="annivState.annivs" style="width: 100%">
-                <el-table-column type="selection" width="35" />
-                <el-table-column label="活动名称" width="350">
+                <el-table-column type="selection" width="35" fixed/>
+                <el-table-column label="活动名称" width="350" fixed>
                     <template #default="scope">{{ scope.row.title }}</template>
                     </el-table-column>
                     <el-table-column property="admin_id" label="管理员ID" width="200" />

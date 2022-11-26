@@ -18,8 +18,8 @@
 
         <el-main>
             <el-table :data="newsState.news" style="width: 100%">
-                <el-table-column type="selection" width="35" />
-                <el-table-column property="title" label="标题" width="00" />
+                <el-table-column type="selection" width="35" fixed/>
+                <el-table-column property="title" label="标题" width="00" fixed/>
                 <el-table-column property="author_id" label="管理员ID" width="200" />
                 <el-table-column property="create_time" label="创建时间" width="300" sortable />
                 <el-table-column property="authorID" label="描述" width="350" />
