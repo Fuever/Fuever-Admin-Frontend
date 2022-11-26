@@ -73,9 +73,6 @@
     <el-form-item label="职业">
         <el-input  placeholder="" style="width: 100px;" v-model='usersState.currentUser.job'/>
     </el-form-item>
-    <el-form-item label="电话">
-        <el-input  placeholder="" style="width: 100px;" v-model='usersState.currentUser.phone'/>
-    </el-form-item>
   </el-form>
    <el-row>
     profile:

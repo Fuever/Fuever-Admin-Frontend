@@ -119,7 +119,7 @@ const saveAnniv = ()=> {
   })
 }
 const handleDel = (index)=>{
-  axiosInstance.delete('/api/auth/admin/anniv/',{id:annivState.annivs[index].id}).then((res)=>{
+  axiosInstance.delete('/api/auth/admin/anniv/'+annivState.annivs[index].id).then((res)=>{
     if (res.status==200) {
         ElMessage.success('删除成功');
         annivState.annivs.splice(index,1);
