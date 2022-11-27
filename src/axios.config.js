@@ -3,7 +3,7 @@ import axios from 'axios'
 axios.defaults.baseURL='http://www.avaqua.love:8080'
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-const axiosInstance = axios.create({
+const axiosInstance = axios.create({  
 	timeout: 20000,
     headers: {
         'Content-Type': 'application/json',
