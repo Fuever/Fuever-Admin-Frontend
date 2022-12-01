@@ -59,7 +59,7 @@
       <el-dialog v-model="dialogVisible" :title="stateTable.currentPost.title" width="60%" center>
         <el-form :inline="true" class="">
           <el-form-item label="作者">
-            <el-input placeholder="作者ID" disabled />
+            <el-input v-model="stateTable.currentPost.author_id" disabled />
           </el-form-item>
           <el-form-item label="状态">
             <!-- <el-select v-model="stateTable.currentPost.state" :on-change="handleChange">
@@ -71,13 +71,13 @@
         </el-form>
         <el-form-item label="创建时间">
           <el-col :span="8">
-            <el-input disabled v-model="stateTable.currentPost.created_time"></el-input>
+            <el-input disabled>{{foramtTime(stateTable.currentPost.created_time)}}</el-input>
           </el-col>
           <el-col :span="2" class="text-center" :offset="1">
             <span class="text-gray-500">更新时间</span>
           </el-col>
           <el-col :span="8">
-            <el-input disabled  v-model="stateTable.currentPost.updated_time"></el-input>
+            <el-input disabled >{{foramtTime(stateTable.currentPost.updated_time)}}</el-input>
           </el-col>
         </el-form-item>
         <el-table :data="stateTable.comments" style="width: 100%" max-height="250">
@@ -179,6 +179,9 @@ const stateTable = reactive(
       "id": 37
     }
   })
+const  foramtTime = (t) =>{
+  return new Date(t*1000).toLocaleString()
+}
 const timeformat1 = (row)=> {
     return new Date(row.created_time*1000).toLocaleString()
 }
