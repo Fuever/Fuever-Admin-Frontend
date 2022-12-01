@@ -55,8 +55,8 @@
     <el-form-item label="地址">
         <el-input  placeholder="现居地址" style="width: 300px;" v-model='usersState.currentUser.residence'/>
     </el-form-item>
-    <el-form-item label="年龄">
-        <el-input  placeholder="11" style="width: 100px;" v-model='usersState.currentUser.age'/>
+    <el-form-item label="年龄">exit
+        <el-input  placeholder="11" style="width: 100px;" v-model.number='usersState.currentUser.age'/>
     </el-form-item>
     <el-form-item label="邮箱">
         <el-input  placeholder="" style="width: 300px;" v-model='usersState.currentUser.mail'/>
@@ -65,10 +65,10 @@
         <el-input  placeholder="" style="width: 100px;" v-model='usersState.currentUser.entrance_time'/>
     </el-form-item>
     <el-form-item label="学号">
-        <el-input  placeholder="" style="width: 100px;" v-model='usersState.currentUser.student_id'/>
+        <el-input  placeholder="" style="width: 100px;" v-model.number='usersState.currentUser.student_id'/>
     </el-form-item>
     <el-form-item label="班级">
-        <el-input  placeholder="" style="width: 100px;" v-model='usersState.currentUser.class_id'/>
+        <el-input  placeholder="" style="width: 100px;" v-model.number='usersState.currentUser.class_id'/>
     </el-form-item>
     <el-form-item label="职业">
         <el-input  placeholder="" style="width: 100px;" v-model='usersState.currentUser.job'/>
@@ -142,7 +142,7 @@ const usersState = reactive({
             'nickname':'jjjjj',
             'username':'梅西',
             'avatar':'url',
-            'student_id':"032000000",
+            'student_id':32000000,
             'phone':'911',
             'gender':1,
             'age':19,
@@ -158,7 +158,7 @@ const usersState = reactive({
             'nickname':'jjjjj',
             'username':'梅西',
             'avatar':'url',
-            'student_id':"032000000",
+            'student_id':32000000,
             'phone':'911',
             'gender':1,
             'age':19,
