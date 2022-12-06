@@ -16,7 +16,7 @@
         <el-col :span="8" :offset="6">
           <el-input v-model="searchWord" placeholder="输入关键词以查找" class="input-with-select">
             <template #append>
-              <el-button type="primary" size>
+              <el-button type="primary" size @click="search">
                 <el-icon>
                   <Search />
                 </el-icon>搜索
@@ -131,7 +131,7 @@ onMounted(() => {
 
 const searchWord = ref('')
 const dialogVisible = ref(false)
-const currentPage = 1
+const currentPage = ref(1)
 const currentblock = ref(1)
 const newblock = ref('')
 const stateTable = reactive(
@@ -264,6 +264,11 @@ const handleChange = () => {
 }
 const handleCurrentChange = (val)=> {
   axiosInstance.get('/api/pub/posts/b/'+currentblock.value.toString()+'?limit=20&offset='+(val-1)*20).then((res) => {
+    stateTable.posts = res.data.data;
+  })
+}
+const search = ()=>{
+  axiosInstance.get('/api/pub/posts/search?limit=20&offset='+(currentPage.value-1)*20+'&word='+searchWord.value).then((res) => {
     stateTable.posts = res.data.data;
   })
 }

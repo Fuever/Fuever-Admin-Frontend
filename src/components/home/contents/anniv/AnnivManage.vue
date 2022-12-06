@@ -5,7 +5,7 @@
                 <el-col :span="10" :offset="6">
                     <el-input v-model="searchWord" placeholder="输入关键词以查找" class="input-with-select">
                         <template #append>
-                            <el-button type="primary" size>
+                            <el-button type="primary" size @click="search">
                                 <el-icon>
                                     <Search />
                                 </el-icon>搜索
@@ -138,6 +138,9 @@ const handleCurrentChange  = (val)=>{
     annivState.annivs = res.data.data;
     annivState.currentAnniv = annivState.annivs[0].id;
   })
+}
+const search = ()=>{
+    
 }
 </script>
 <style lang="scss" scoped>
