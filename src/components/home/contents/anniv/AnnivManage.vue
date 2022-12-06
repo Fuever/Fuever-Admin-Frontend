@@ -70,7 +70,7 @@
         </el-main>
         <el-footer>
             <el-pagination v-model:current-page="currentPage" :page-size="100" small disabled
-                background layout="total, prev, pager, next" :total="1000"/>
+                layout="prev, pager, next" :total="1000" @current-change="handleCurrentChange"/>
         </el-footer>
     </div>
 </template>
@@ -131,6 +131,13 @@ const handleDetail = (index)=> {
   annivState.currentAnniv = annivState.annivs[index]
   annivState.currentAnniv.start*=1000
   annivState.currentAnniv.end*=1000
+}
+const handleCurrentChange  = (val)=>{
+    console.log(val);
+    axiosInstance.get('/api/pub/anniv?limit=20&offset='+(val-1)*20).then((res) => {
+    annivState.annivs = res.data.data;
+    annivState.currentAnniv = annivState.annivs[0].id;
+  })
 }
 </script>
 <style lang="scss" scoped>

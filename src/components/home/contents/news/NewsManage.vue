@@ -54,7 +54,7 @@
             </el-upload>
             </el-col>
             <el-row :span="6">
-                <el-image v-if="newsState.currentnew.cover!=''" style="width: 100px; height: 60px" :src="newsState.currentnew.cover" :fit="fit" />
+                <el-image v-if="newsState.currentnew.cover!=''" style="width: 100px; height: 60px" :src="newsState.currentnew.cover" fit="fit" />
             </el-row>
         </el-row>
     <div class="editor">
@@ -74,7 +74,7 @@
         </el-main>
         <el-footer>
             <el-pagination v-model:current-page="currentPage" :page-size="100" small
-                background layout="total, prev, pager, next" :total="1000" />
+                background layout="prev, pager, next" :total="1000"  @current-change="handleCurrentChange"/>
         </el-footer>
     </div>
 </template>
@@ -135,6 +135,11 @@ const handleDel = (index)=>{
 const handleDetail = (index)=> {
   dialogVisible.value = true  
   newsState.currentnew = newsState.news[index]
+}
+const handleCurrentChange = (val)=>{
+    axiosInstance.get('/api/pub/news/?limit=20&offset='+(val-1)*20).then((res) => {
+    newsState.news = res.data.data;
+  })
 }
 </script>
 <style lang="scss" scoped>

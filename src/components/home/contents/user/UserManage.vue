@@ -43,7 +43,7 @@
     </el-form-item>
     <el-form-item>
         <el-form-item label="电话">
-      <el-input  placeholder="911" style="width: 150px;" v-model='usersState.currentUser.phone'/>
+      <el-input  placeholder="911" style="width: 150px;" v-model.number='usersState.currentUser.phone'/>
     </el-form-item>
     </el-form-item>
     <el-form-item :label="gender">
@@ -110,7 +110,7 @@
         </el-main>
         <el-footer>
             <el-pagination v-model:current-page="currentPage" :page-size="100" small
-                background layout="total, prev, pager, next" :total="1000" />
+                background layout="prev, pager, next" :total="1000" @current-change="handleCurrentChange"/>
         </el-footer>
     </div>
 </template>
@@ -188,7 +188,7 @@ const handleUserDel = (index)=>{
 }
 const handleUserDetail = (index)=> {
   dialogVisible.value=true;
-  console.log(index);
+//   console.log(index);
   usersState.currentUser = usersState.users[index]
 }
 const uploadImage =(
@@ -205,9 +205,14 @@ const uploadImage =(
         if (res.status === 200) {
             
             usersState.currentUser.avatar = res.data.data;
-            console.log(usersState.currentUser);
+            // console.log(usersState.currentUser);
         }
     })
+}
+const handleCurrentChange = (val)=>{
+    axiosInstance.get('/api/auth/admin/user/?limit=20&offset='+(val-1)*20).then((res)=>{
+    usersState.users=res.data.data;
+  })
 }
 </script>
 <style lang="scss" scoped>

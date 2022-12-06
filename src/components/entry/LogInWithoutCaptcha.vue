@@ -1,6 +1,9 @@
 <template>
     <div class="form">
         <el-form  :model="logInForm" status-icon :rules="rules" label-width="60px" class="logInForm">
+            <el-row class="void">
+
+            </el-row>
             <el-row>
                 <el-col :span="24">
                     <el-form-item label="用户名" prop="username">
@@ -26,12 +29,12 @@
                 </el-col>
             </el-row> -->
             <el-row>
-                <el-col :span="6" :offset="4">
+                <el-col :span="6" :offset="8">
                     <el-button type="primary" @click="handleLogIn">登录</el-button>
                 </el-col>
-                <el-col :span="6" :offset="2">
+                <!-- <el-col :span="6" :offset="2">
                     <el-button type="primary" plain @click="$emit('switchToSign')">注册</el-button>
-                </el-col>
+                </el-col> -->
             </el-row>
         </el-form>
     </div>
@@ -43,8 +46,8 @@ import { ElMessage } from 'element-plus';
 import router from '@/router';
 import axiosInstance from '@/axios.config';
 const logInForm = reactive({
-    username: '1234567',
-    password: '1234567',
+    username: '',
+    password: '',
 })
 const handleLogIn = () => {
     const args = {
@@ -102,5 +105,8 @@ const rules = reactive({
 <style lang="scss" scoped>
 .form {
     padding: 20px;
+}
+.void {
+    height: 40px;
 }
 </style>

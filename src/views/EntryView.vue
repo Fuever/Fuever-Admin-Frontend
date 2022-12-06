@@ -4,7 +4,7 @@
             src="https://jwch.fzu.edu.cn/dfiles/11251/themes/46902/default_46902/jwch/images/38609a28efe1da66fb338fe868fc4428_beijing.jpg" />
     </div>
     <div class="fu-form">
-        <el-tabs v-model="activeState" class="entry-tabs">
+        <!-- <el-tabs v-model="activeState" class="entry-tabs">
             <el-tab-pane name="logIn">
                 <template #label>
                     <span class="tabs-label">
@@ -25,7 +25,7 @@
                     </span>
                 </template>
             </el-tab-pane>
-        </el-tabs>
+        </el-tabs> -->
         <div class="switch-orm">
             <!-- <LogIn v-show="activeState=='logIn'" @switch-to-sign="switchToSign"></LogIn> -->
             <LogInWithoutCaptchaVue v-show="activeState=='logIn'" @switch-to-sign="switchToSign"></LogInWithoutCaptchaVue>

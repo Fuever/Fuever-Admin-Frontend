@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-row>
+        <!-- <el-row>
             <el-col :span="2">
                 头像：
             </el-col>
@@ -14,13 +14,13 @@
                 </el-upload>
                 <p class="notes">只能上传jpg/png图片,且不大于500KB。</p>
             </el-col>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="20">
             <el-col :span="2">
                 用户名:
             </el-col>
             <el-col :span="4" :offset="0">
-                <el-input v-model="input" placeholder="请输入" clearable/>
+                <el-input v-model="stateTable.username" placeholder="请输入" clearable/>
             </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -28,7 +28,7 @@
                 修改密码:
             </el-col>
             <el-col :span="4" :offset="0">
-                <el-input v-model="input" type="password" placeholder="请输入您的密码" show-password disabled/>
+                <el-input v-model="stateTable.password" type="password" placeholder="请输入您的密码" show-password disabled/>
             </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -36,7 +36,7 @@
                 再次输入:
             </el-col>
             <el-col :span="4" :offset="0">
-                <el-input v-model="input" type="password" placeholder="请再次输入密码" show-password disabled/>
+                <el-input v-model="stateTable.repeat" type="password" placeholder="请再次输入密码" show-password disabled/>
             </el-col>
         </el-row>
         <el-row>
@@ -48,7 +48,13 @@
 </template>
 
 <script setup>
+import { reactive } from 'vue';
 
+const stateTable = reactive({
+    username:"",
+    password:"",
+    repeat:""
+})
 </script>
 
 <style lang="scss">

@@ -59,25 +59,25 @@
       <el-dialog v-model="dialogVisible" :title="stateTable.currentPost.title" width="60%" center>
         <el-form :inline="true" class="">
           <el-form-item label="作者">
-            <el-input v-model="stateTable.currentPost.author_id" disabled />
+            <el-input v-model="stateTable.currentPost.author_name" disabled />
           </el-form-item>
-          <el-form-item label="状态">
-            <!-- <el-select v-model="stateTable.currentPost.state" :on-change="handleChange">
+          <!-- <el-form-item label="状态">
+            <el-select v-model="stateTable.currentPost.state" :on-change="handleChange">
               <el-option label="正常" value=0 />
               <el-option label="置顶" value=1 />
               <el-option label="已隐藏" value=2 />
-            </el-select> -->
-          </el-form-item>
+            </el-select>
+          </el-form-item> -->
         </el-form>
         <el-form-item label="创建时间">
           <el-col :span="8">
-            <el-input disabled>{{foramtTime(stateTable.currentPost.created_time)}}</el-input>
+            <el-input disabled v-model="stateTable.currentPost.created_time"></el-input>
           </el-col>
           <el-col :span="2" class="text-center" :offset="1">
             <span class="text-gray-500">更新时间</span>
           </el-col>
           <el-col :span="8">
-            <el-input disabled >{{foramtTime(stateTable.currentPost.updated_time)}}</el-input>
+            <el-input disabled v-model="stateTable.currentPost.updated_time"></el-input>
           </el-col>
         </el-form-item>
         <el-table :data="stateTable.comments" style="width: 100%" max-height="250">
@@ -107,7 +107,7 @@
     </el-main>
     <el-footer>
       <el-pagination v-model:current-page="currentPage" :page-size="100" small background
-        layout="total, prev, pager, next" :total="1000" />
+        layout="total, prev, pager, next" :total="1000"  @current-change="handleCurrentChange"/>
     </el-footer>
   </div>
 </template>
@@ -180,6 +180,7 @@ const stateTable = reactive(
     }
   })
 const  foramtTime = (t) =>{
+  console.log(t);
   return new Date(t*1000).toLocaleString()
 }
 const timeformat1 = (row)=> {
@@ -200,7 +201,7 @@ const addblock = ()=> {
   })
 }
 const filterTag = (value, row) => {
-  console.log(value,row);
+  // console.log(value,row);
   return row.state === value
 }
 const typeJudge = (state) => {
@@ -218,7 +219,9 @@ const handleDetail = (index) => {
   let url = '/api/pub/posts/p/' + stateTable.posts[index].id.toString()+'?limit=20&offset=0'
   axiosInstance.get(url).then((res) => {
     stateTable.comments = res.data.data.comment;
-    stateTable.currentPost = res.data.data.post;
+    stateTable.currentPost = stateTable.posts[index];
+    stateTable.currentPost.created_time = foramtTime(stateTable.currentPost.created_time)
+    stateTable.currentPost.updated_time = foramtTime(stateTable.currentPost.updated_time)
   })
 }
 const handleTop = (index) => {
@@ -256,6 +259,11 @@ const deleteRow = (index) => {
 }
 const handleChange = () => {
   axiosInstance.get('/api/pub/posts/b/'+currentblock.value.toString()+'?offset=0&limit=20').then((res) => {
+    stateTable.posts = res.data.data;
+  })
+}
+const handleCurrentChange = (val)=> {
+  axiosInstance.get('/api/pub/posts/b/'+currentblock.value.toString()+'?limit=20&offset='+(val-1)*20).then((res) => {
     stateTable.posts = res.data.data;
   })
 }
