@@ -24,7 +24,7 @@
             </el-upload>
             </el-col>
             <el-row :span="6">
-                <el-image v-if="newsState.news.cover!=''" style="width: 100px; height: 60px" :src="newsState.news.cover" fit="fit" />
+                <el-image v-if="newsState.news.cover!=''" style="" :src="newsState.news.cover" fit="fit" />
             </el-row>
         </el-row>
         <el-row>
@@ -48,7 +48,7 @@ const newsState = reactive({
     news:{
         'title':'',
         'content':'',
-        'cover':'https://fuever-1313037799.cos.ap-nanjing.myqcloud.com/1669256053941570786.jpg'
+        'cover':''
     }
 }
 )

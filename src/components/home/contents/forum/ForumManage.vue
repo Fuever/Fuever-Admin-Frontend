@@ -35,9 +35,9 @@
         </el-table-column>
         <el-table-column prop="author_name" label="作者昵称" width="100" />
         <el-table-column prop="state" label="状态" width="150" :filters="[
-          { text: '置顶', value: 1 },
+          { text: '置顶', value: 2 },
           { text: '正常', value: 0 },
-          { text: '已隐藏', value: 2 },
+          { text: '已隐藏', value: 1 },
         ]" :filter-method="filterTag" filter-placement="bottom-end">
           <template #default="scope">
             <el-tag :type="typeJudge(scope.row.state)">{{ tagJudge(scope.row.state) }}</el-tag>
@@ -180,7 +180,6 @@ const stateTable = reactive(
     }
   })
 const  foramtTime = (t) =>{
-  console.log(t);
   return new Date(t*1000).toLocaleString()
 }
 const timeformat1 = (row)=> {
@@ -205,14 +204,14 @@ const filterTag = (value, row) => {
   return row.state === value
 }
 const typeJudge = (state) => {
-  if (state == 1) return 'danger'
+  if (state == 1) return 'info'
   if (state == 0) return 'success'
-  if (state == 2) return 'info'
+  if (state == 2) return 'danger'
 }
 const tagJudge = (state) => {
-  if (state == 1) return '置顶'
+  if (state == 2) return '置顶'
   if (state == 0) return '正常'
-  if (state == 2) return '已隐藏'
+  if (state == 1) return '已隐藏'
 }
 const handleDetail = (index) => {
   dialogVisible.value = true;

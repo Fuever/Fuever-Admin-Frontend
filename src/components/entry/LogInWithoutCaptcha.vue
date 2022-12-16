@@ -1,13 +1,13 @@
 <template>
     <div class="form">
-        <el-form  :model="logInForm" status-icon :rules="rules" label-width="60px" class="logInForm">
+        <el-form :model="logInForm" status-icon :rules="rules" label-width="60px" class="logInForm">
             <el-row class="void">
 
             </el-row>
             <el-row>
                 <el-col :span="24">
                     <el-form-item label="用户名" prop="username">
-                        <el-input v-model="logInForm.username"/>
+                        <el-input v-model="logInForm.username" />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -54,28 +54,30 @@ const handleLogIn = () => {
         name: logInForm.username,
         password: logInForm.password,
     }
-    axiosInstance.post('/api/pub/admin/login',args).then((res) => {
+    axiosInstance.post('/api/pub/admin/login', args).then((res) => {
         if (res.status == 200) {
             ElMessage({
                 message: '登录成功',
                 type: 'success'
             })
-            console.log(res);
             window.localStorage.setItem('token', res.data.data.token)
             router.push('/home')
         } else {
-    ElMessage.error("登录失败，请稍后再试！")
-return false
+            ElMessage.error("登录失败，请稍后再试！")
+            return false
         }
+    }).catch(() => {
+        ElMessage.error("用户名与密码不匹配")
+        return false
     })
-} 
+}
 
 
 const checkUserame = (_, value, callback) => {
     if (!value) {
         return callback(new Error('请输入用户名！'))
     } else if (!/^\w+$/.test(logInForm.username)) {
-        return callback(new Error('用户名不应含有特殊字符！'))
+        // return callback(new Error('用户名不应含有特殊字符！'))
     } else {
         return callback()
     }
@@ -106,6 +108,7 @@ const rules = reactive({
 .form {
     padding: 20px;
 }
+
 .void {
     height: 40px;
 }
