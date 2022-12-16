@@ -29,22 +29,21 @@
 
     <el-main>
       <el-table ref="postsTableRef" :data="stateTable.posts">
-        <el-table-column type="selection" width="35" fixed/>
+        <el-table-column type="selection" width="35" fixed />
         <el-table-column label="标题" width="320" fixed>
           <template #default="scope">{{ scope.row.title }}</template>
         </el-table-column>
         <el-table-column prop="author_name" label="作者昵称" width="100" />
         <el-table-column prop="state" label="状态" width="150" :filters="[
-          { text: '置顶', value: 2 },
           { text: '正常', value: 0 },
-          { text: '已隐藏', value: 1 },
+          { text: '置顶', value: 2 },
         ]" :filter-method="filterTag" filter-placement="bottom-end">
           <template #default="scope">
             <el-tag :type="typeJudge(scope.row.state)">{{ tagJudge(scope.row.state) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column property="created_time" label="创建时间" width="300" sortable :formatter='timeformat1'/>
-        <el-table-column property="updated_time" label="更新时间" width="300" sortable :formatter='timeformat2'/>
+        <el-table-column property="created_time" label="创建时间" sortable :formatter='timeformat1' />
+        <el-table-column property="updated_time" label="更新时间" sortable :formatter='timeformat2' />
         <el-table-column fixed="right" label="操作" width="250">
           <template #default="scope">
             <el-button link type="primary" size="small" @click.prevent="handleDetail(scope.$index)">详情</el-button>
@@ -107,7 +106,7 @@
     </el-main>
     <el-footer>
       <el-pagination v-model:current-page="currentPage" :page-size="100" small background
-        layout="total, prev, pager, next" :total="1000"  @current-change="handleCurrentChange"/>
+        layout="total, prev, pager, next" :total="1000" @current-change="handleCurrentChange" />
     </el-footer>
   </div>
 </template>
@@ -123,9 +122,9 @@ onMounted(() => {
     stateTable.blocks = res.data.data;
     currentblock.value = stateTable.blocks[0].id;
   }).then(
-    axiosInstance.get('/api/pub/posts/b/'+currentblock.value.toString()+'?offset=0&limit=20').then((res) => {
-    stateTable.posts = res.data.data;
-  })
+    axiosInstance.get('/api/pub/posts/b/' + currentblock.value.toString() + '?offset=0&limit=20').then((res) => {
+      stateTable.posts = res.data.data;
+    })
   )
 })
 
@@ -179,28 +178,28 @@ const stateTable = reactive(
       "id": 37
     }
   })
-const  foramtTime = (t) =>{
-  return new Date(t*1000).toLocaleString()
+const foramtTime = (t) => {
+  return new Date(t * 1000).toLocaleString()
 }
-const timeformat1 = (row)=> {
-    return new Date(row.created_time*1000).toLocaleString()
+const timeformat1 = (row) => {
+  return new Date(row.created_time * 1000).toLocaleString()
 }
-const timeformat2 = (row)=> {
-    return new Date(row.updated_time*1000).toLocaleString()
+const timeformat2 = (row) => {
+  return new Date(row.updated_time * 1000).toLocaleString()
 }
-const addblock = ()=> {
-  axiosInstance.post('/api/auth/admin/block/',{'title':newblock.value}).then((res)=>{
-    if (res.status==200) {
+const addblock = () => {
+  axiosInstance.post('/api/auth/admin/block/', { 'title': newblock.value }).then((res) => {
+    if (res.status == 200) {
       ElMessage.success("创建成功")
       axiosInstance.get('/api/pub/block/?limit=20&offset=0').then((res) => {
-    stateTable.blocks = res.data.data;
-    currentblock.value = stateTable.blocks[0].id;
-  })
+        stateTable.blocks = res.data.data;
+        currentblock.value = stateTable.blocks[0].id;
+      })
     }
   })
 }
 const filterTag = (value, row) => {
-  // console.log(value,row);
+  console.log(value,row);
   return row.state === value
 }
 const typeJudge = (state) => {
@@ -215,7 +214,7 @@ const tagJudge = (state) => {
 }
 const handleDetail = (index) => {
   dialogVisible.value = true;
-  let url = '/api/pub/posts/p/' + stateTable.posts[index].id.toString()+'?limit=20&offset=0'
+  let url = '/api/pub/posts/p/' + stateTable.posts[index].id.toString() + '?limit=20&offset=0'
   axiosInstance.get(url).then((res) => {
     stateTable.comments = res.data.data.comment;
     stateTable.currentPost = stateTable.posts[index];
@@ -225,11 +224,11 @@ const handleDetail = (index) => {
 }
 const handleTop = (index) => {
   stateTable.posts[index].state = 1
-  axiosInstance.put('/api/auth/admin/posts/',{
-    id:stateTable.posts[index].id,
-    state:stateTable.posts[index].state
-  }).then((res)=>{
-    if (res.status==20) {
+  axiosInstance.put('/api/auth/admin/posts/', {
+    id: stateTable.posts[index].id,
+    state: stateTable.posts[index].state
+  }).then((res) => {
+    if (res.status == 20) {
       ElMessage.success('修改成功')
     }
   })
@@ -240,9 +239,9 @@ const handleTop = (index) => {
 // }
 const handleDelete = (index) => {
   stateTable.posts[index].state = 1
-  axiosInstance.delete('/api/auth/admin/posts/'+stateTable.posts[index].id.toString()).then((res) => {
+  axiosInstance.delete('/api/auth/admin/posts/' + stateTable.posts[index].id.toString()).then((res) => {
     if (res.status == 200) {
-      stateTable.posts.splice(index,1);
+      stateTable.posts.splice(index, 1);
       ElMessage.success('删除成功！')
     }
   })
@@ -257,22 +256,28 @@ const deleteRow = (index) => {
   })
 }
 const handleChange = () => {
-  axiosInstance.get('/api/pub/posts/b/'+currentblock.value.toString()+'?offset=0&limit=20').then((res) => {
+  axiosInstance.get('/api/pub/posts/b/' + currentblock.value.toString() + '?offset=0&limit=20').then((res) => {
     stateTable.posts = res.data.data;
   })
 }
-const handleCurrentChange = (val)=> {
-  axiosInstance.get('/api/pub/posts/b/'+currentblock.value.toString()+'?limit=20&offset='+(val-1)*20).then((res) => {
+const handleCurrentChange = (val) => {
+  axiosInstance.get('/api/pub/posts/b/' + currentblock.value.toString() + '?limit=20&offset=' + (val - 1) * 20).then((res) => {
     stateTable.posts = res.data.data;
   })
 }
-const search = ()=>{
-  axiosInstance.get('/api/pub/posts/search?limit=20&offset='+(currentPage.value-1)*20+'&word='+searchWord.value).then((res) => {
+const search = () => {
+  axiosInstance.get('/api/pub/posts/search?limit=20&offset=' + (currentPage.value - 1) * 20 + '&word=' + searchWord.value).then((res) => {
     stateTable.posts = res.data.data;
   })
 }
 </script>
 
-<style lang="scss" scoped>
+<style>
+.el-table th.gutter {
+  display: table-cell !important;
+}
 
+.el-table--border th.gutter:last-of-type {
+  display: table-cell !important;
+}
 </style>
