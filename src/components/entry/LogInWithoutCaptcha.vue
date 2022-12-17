@@ -14,7 +14,7 @@
             <el-row>
                 <el-col :span="24">
                     <el-form-item label="密码" prop="password">
-                        <el-input v-model="logInForm.password" type="password" autocomplete="off" />
+                        <el-input v-model="logInForm.password" type="password" autocomplete="off" clearable/>
                     </el-form-item>
                 </el-col>
             </el-row>
