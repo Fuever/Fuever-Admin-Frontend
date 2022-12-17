@@ -1,6 +1,6 @@
 <template>
     <div class="home-bg">
-        <el-container class="fu-header">
+        <el-container>
             <el-header>
                 <HomeNav></HomeNav>
             </el-header>
