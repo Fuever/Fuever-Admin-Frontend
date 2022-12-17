@@ -223,7 +223,7 @@ const handleDetail = (index) => {
   })
 }
 const handleTop = (index) => {
-  stateTable.posts[index].state = 1
+  stateTable.posts[index].state = 2
   axiosInstance.put('/api/auth/admin/posts/', {
     id: stateTable.posts[index].id,
     state: stateTable.posts[index].state
