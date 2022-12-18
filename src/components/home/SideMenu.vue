@@ -33,6 +33,18 @@
           <span>发布校庆</span>
         </el-menu-item>
       </el-sub-menu>
+      <el-sub-menu index="/anniv">
+        <template #title>
+          <el-icon><Film /></el-icon>
+          <span>长廊管理</span>
+        </template>
+        <el-menu-item  index="/anniv">
+          <span>长廊管理</span>
+        </el-menu-item>
+        <el-menu-item  index="/new_anniv">
+          <span>发布长廊</span>
+        </el-menu-item>
+      </el-sub-menu>
       <el-menu-item index="/personal">
         <el-icon>
           <setting />
