@@ -2,17 +2,17 @@
     <div>
         <el-row class="title">
             <el-col :span='2'>
-                <p>新闻标题</p>
+                <div>新闻标题</div>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="12" :offset="1">
             <el-input v-model="newsState.news.title" placeholder="Please input"/>
             </el-col>
         </el-row>
         <el-row>
             <el-col :span="2">
-                <p>新闻封面</p>
+                <div>新闻封面</div>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="6" :offset="1">
                 <el-upload
                 action="" :before-upload="uploadcover" :limit="1">
                 <el-button type="primary">Click to upload</el-button>
