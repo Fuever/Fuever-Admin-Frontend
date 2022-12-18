@@ -2,7 +2,7 @@
   <div>
     <el-header>
       <el-row class="table-nav" :gutter="50">
-        <el-col :span="4" :offset="0">
+        <el-col :span="5" :offset="0">
           <el-select v-model="currentblock" class="m-2" placeholder="Select" size="large" @change="handleChange(val)">
             <el-option v-for="item in stateTable.blocks" :key="item.id" :label="item.title" :value="item.id" />
           </el-select>

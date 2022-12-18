@@ -6,7 +6,7 @@
             </el-header>
         </el-container>
         <el-container class="fu-under-header">
-            <el-aside class="fu-aside" width="250px">
+            <el-aside class="fu-aside" width="16vw">
                 <SideMenu></SideMenu>
             </el-aside>
             <el-main class="fu-main">
