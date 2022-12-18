@@ -25,7 +25,7 @@
                     <el-table-column property="admin_id" label="管理员ID" width="200" />
                     <el-table-column property="start" label="开始时间" width="300" sortable :formatter='timeformat1'/>
                     <el-table-column property="end" label="结束时间" width="300" sortable :formatter='timeformat2'/>
-                    <el-table-column property="content" label="内容" width="300" sortable/>
+                    <el-table-column property="content" label="内容" sortable/>
                 <el-table-column fixed="right" label="操作" width="120">
                     <template #default="scope">
                         <el-button link type="primary" size="small" @click="handleDetail(scope.$index)">详情</el-button>
@@ -69,7 +69,7 @@
 </el-dialog>
         </el-main>
         <el-footer>
-            <el-pagination v-model:current-page="currentPage" :page-size="100" small disabled
+            <el-pagination v-model:current-page="currentPage" :page-size="100" small
                 layout="prev, pager, next" :total="1000" @current-change="handleCurrentChange"/>
         </el-footer>
     </div>

@@ -52,6 +52,16 @@ const routes = [
         component:()=> import('../components/home/contents/anniv/NewAnniv.vue')
       },
       {
+        path:'/gallery',
+        name:'gallery',
+        component:() => import('../components/home/contents/gallery/GalleryManage.vue')
+      },
+      {
+        path:'/new_gallery',
+        name:'new_gallery',
+        component:()=> import('../components/home/contents/gallery/NewGallery.vue')
+      },
+      {
         path:'/personal',
         name:'personal',
         component:() => import('../components/home/contents/personal/PersonalCenter.vue')

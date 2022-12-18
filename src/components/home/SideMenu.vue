@@ -1,11 +1,15 @@
 <template>
   <div class="side-menu">
-    <el-menu default-active="/forum" class="el-menu-vertical-fu" @select="handleSelect">
-      <el-menu-item index='/forum'>
+    <el-menu
+      default-active="/forum"
+      class="el-menu-vertical-fu"
+      @select="handleSelect"
+    >
+      <el-menu-item index="/forum">
         <el-icon><ChatLineSquare /></el-icon>
         <span>论坛审核</span>
       </el-menu-item>
-      <el-menu-item index='/user'>
+      <el-menu-item index="/user">
         <el-icon><User /></el-icon>
         <span>用户管理</span>
       </el-menu-item>
@@ -26,22 +30,22 @@
           <el-icon><Calendar /></el-icon>
           <span>校庆管理</span>
         </template>
-        <el-menu-item  index="/anniv">
+        <el-menu-item index="/anniv">
           <span>校庆管理</span>
         </el-menu-item>
-        <el-menu-item  index="/new_anniv">
+        <el-menu-item index="/new_anniv">
           <span>发布校庆</span>
         </el-menu-item>
       </el-sub-menu>
-      <el-sub-menu index="/anniv">
+      <el-sub-menu index="/gallery">
         <template #title>
           <el-icon><Film /></el-icon>
           <span>长廊管理</span>
         </template>
-        <el-menu-item  index="/anniv">
+        <el-menu-item index="/gallery">
           <span>长廊管理</span>
         </el-menu-item>
-        <el-menu-item  index="/new_anniv">
+        <el-menu-item index="/new_gallery">
           <span>发布长廊</span>
         </el-menu-item>
       </el-sub-menu>
@@ -56,14 +60,11 @@
 </template>
 
 <script setup>
-import router from '@/router';
+import router from "@/router";
 
-const handleSelect = (index)=> {
-  router.push(index)
-}
-
+const handleSelect = (index) => {
+  router.push(index);
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
